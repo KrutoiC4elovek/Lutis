@@ -12,13 +12,16 @@ local power = 50
 local speed = 0
 local flightEnabled = false
 
-local powerSlider = Tab:AddSlider({
+local powerTextbox = Tab:AddTextbox({
     Name = "Мощность",
-    Min = 0,
-    Max = 100,
-    Default = power,
+    Default = tostring(power),
     Callback = function(value)
-        power = value
+        local num = tonumber(value)
+        if num then
+            power = num
+        else
+            powerTextbox:Set(tostring(power))
+        end
     end
 })
 
@@ -33,7 +36,7 @@ local speedSlider = Tab:AddSlider({
 })
 
 local flightToggle = Tab:AddToggle({
-    Name = "Полет",
+    Name = "Включить massless изменить размер и FlightSpeed кстати салойбратикврайта",
     Default = flightEnabled,
     Callback = function(value)
         flightEnabled = value
@@ -46,11 +49,13 @@ task.spawn(function()
             local brick = game.Players.LocalPlayer.Character.Brick
             brick.Speed.Value = speed
             brick.Power.Value = power / 10
-            brick.Handle.Massless = true
-            brick.Handle.Size = Vector3.new(1254, math.random(1, 10), math.random(1, 10))
             if flightEnabled then
+                brick.Handle.Massless = true
+                brick.Handle.Size = Vector3.new(1254, math.random(1, 10), math.random(1, 10))
                 brick.FlightSpeed.Value = 100000000000000
             else
+                brick.Handle.Massless = false
+                brick.Handle.Size = Vector3.new(1, 1, 1)
                 brick.FlightSpeed.Value = 0
             end
         end
