@@ -39,22 +39,6 @@ local speedTextbox = Tab:AddTextbox({
     end
 })
 
-local resetButton = Tab:AddButton({
-    Name = "Сбросить до дефолта",
-    Callback = function()
-        power = 5
-        speed = 0.7
-        powerTextbox:Set(tostring(power))
-        speedTextbox:Set(tostring(speed))
-        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Brick") then
-            local brick = game.Players.LocalPlayer.Character.Brick
-            brick.Power.Value = power
-            brick.Speed.Value = speed
-            brick.Handle.Size = Vector3.new(1.7042549848556519, 2.625422477722168, 0.33697208762168884)
-        end
-    end
-})
-
 local flightToggle = Tab:AddToggle({
     Name = "Включить massless изменить размер и FlightSpeed кстати салойбратикврайта",
     Default = flightEnabled,
@@ -68,6 +52,16 @@ local dragToggle = Tab:AddToggle({
     Default = dragEnabled,
     Callback = function(value)
         dragEnabled = value
+    end
+})
+
+Tab:AddButton({
+    Name = "Сброс к дефолту",
+    Callback = function()
+        power = 5
+        speed = 0.7
+        powerTextbox:Set(tostring(power / 10))
+        speedTextbox:Set(tostring(speed))
     end
 })
 
@@ -114,8 +108,8 @@ local function MakeDraggable(DragPoint, Main)
     UserInputService.InputChanged:Connect(function(Input)
         if Input == DragInput and Dragging and dragEnabled then
             local Delta = Input.Position - MousePos
-            TweenService:Create(Main, TweenInfo.new(0.05, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)}):Play()
-            Main.Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)
+            TweenService:Create(Main, TweenInfo.new(0.05, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position = UDim2.new(FramePos.X.Scale, FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)}):Play()
+            Main.Position = UDim2.new(FramePos.X.Scale, FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)
         end
     end)
 end
