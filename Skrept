@@ -26,13 +26,32 @@ local powerTextbox = Tab:AddTextbox({
     end
 })
 
-local speedSlider = Tab:AddSlider({
+local speedTextbox = Tab:AddTextbox({
     Name = "Скорость",
-    Min = 0,
-    Max = 100,
-    Default = speed,
+    Default = tostring(speed),
     Callback = function(value)
-        speed = value
+        local num = tonumber(value)
+        if num then
+            speed = num
+        else
+            speedTextbox:Set(tostring(speed))
+        end
+    end
+})
+
+local resetButton = Tab:AddButton({
+    Name = "Сбросить до дефолта",
+    Callback = function()
+        power = 5
+        speed = 0.7
+        powerTextbox:Set(tostring(power))
+        speedTextbox:Set(tostring(speed))
+        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Brick") then
+            local brick = game.Players.LocalPlayer.Character.Brick
+            brick.Power.Value = power
+            brick.Speed.Value = speed
+            brick.Handle.Size = Vector3.new(1.7042549848556519, 2.625422477722168, 0.33697208762168884)
+        end
     end
 })
 
@@ -64,8 +83,8 @@ task.spawn(function()
                 brick.FlightSpeed.Value = 100000000000000
             else
                 brick.Handle.Massless = false
-                brick.Handle.Size = Vector3.new(1, 1, 1)
-                brick.FlightSpeed.Value = 0
+                brick.Handle.Size = Vector3.new(1.7042549848556519, 2.625422477722168, 0.33697208762168884)
+                brick.FlightSpeed.Value = 0.52
             end
         end
     end
